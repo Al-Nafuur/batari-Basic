@@ -6,7 +6,7 @@
 ; note: lines not starting with a space are not placed in all banks
 ;
 ; line below tells the compiler how long this is - do not remove
-;size=32
+;size=35
 
 begin_bscode
  ldx #$ff

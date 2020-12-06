@@ -3,7 +3,11 @@
 ; feel free to modify the score graphics - just keep each digit 8 high
 ; and keep the conditional compilation stuff intact
  ifconst ROM2k
+  ifconst PlusROM_functions
+   ORG $F7AC-16
+  else
    ORG $F7AC-8
+  endif   
  else
    ifconst bankswitch
      if bankswitch == 8
@@ -23,7 +27,11 @@
        RORG $1FF80-bscode_length
      endif
    else
+    ifconst PlusROM_functions
+     ORG $FF98
+    else
      ORG $FF9C
+    endif   
    endif
  endif
 
@@ -178,7 +186,16 @@ scoretable
  endif
 
  ifconst ROM2k
+  ifconst PlusROM_functions
+   ORG $F7F0
+   .byte 0   ; WriteToBuffer
+   .byte 0   ; WriteSendBuffer
+   .byte 0   ; ReceiveBuffer
+   .byte $ff ; ReceiveBufferSize (none zero for detection of PlusROM support)
+   ORG $F7FA
+  else
    ORG $F7FC
+  endif   
  else
    ifconst bankswitch
      if bankswitch == 8
@@ -198,6 +215,15 @@ scoretable
        RORG $1FFE0-bscode_length
      endif
    else
+    ifconst PlusROM_functions
+     ORG $FFF0
+     .byte 0   ; WriteToBuffer
+     .byte 0   ; WriteSendBuffer
+     .byte 0   ; ReceiveBuffer
+     .byte $ff ; ReceiveBufferSize (none zero for detection of PlusROM support)
+     ORG $FFFA
+    else
      ORG $FFFC
+    endif   
    endif
  endif

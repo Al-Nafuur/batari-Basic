@@ -2,16 +2,52 @@
 
  ifconst bankswitch
    if bankswitch == 8
+    ifconst PlusROM_functions
+     ORG $2FF0
+     RORG $FFF0
+     .byte 0   ; WriteToBuffer
+     .byte 0   ; WriteSendBuffer
+     .byte 0   ; ReceiveBuffer
+     .byte $ff ; ReceiveBufferSize (none zero for detection of PlusROM support)
+     ORG $2FFA
+     RORG $FFFA
+     .word (PlusROM_API )
+    else
      ORG $2FFC
      RORG $FFFC
+    endif   
    endif
    if bankswitch == 16
+    ifconst PlusROM_functions
+     ORG $4FF0
+     RORG $FFF0
+     .byte 0   ; WriteToBuffer
+     .byte 0   ; WriteSendBuffer
+     .byte 0   ; ReceiveBuffer
+     .byte $ff ; ReceiveBufferSize (none zero for detection of PlusROM support)
+     ORG $4FFA
+     RORG $FFFA
+     .word (PlusROM_API-$9000)
+    else
      ORG $4FFC
      RORG $FFFC
+    endif   
    endif
    if bankswitch == 32
+    ifconst PlusROM_functions
+     ORG $8FF0
+     RORG $FFF0
+     .byte 0   ; WriteToBuffer
+     .byte 0   ; WriteSendBuffer
+     .byte 0   ; ReceiveBuffer
+     .byte $ff ; ReceiveBufferSize (none zero for detection of PlusROM support)
+     ORG $8FFA
+     RORG $FFFA
+     .word (PlusROM_API)
+    else
      ORG $8FFC
      RORG $FFFC
+    endif   
    endif
    if bankswitch == 64
      ORG  $10FF0
@@ -29,9 +65,19 @@
    endif
  else
    ifconst ROM2k
+    ifconst PlusROM_functions
+     ORG $F7FA
+     .word (PlusROM_API-$E000)
+    else
      ORG $F7FC
+    endif   
    else
+    ifconst PlusROM_functions
+     ORG $FFFA
+     .word (PlusROM_API-$E000)
+    else
      ORG $FFFC
+    endif   
    endif
  endif
  .word (start & $ffff)
