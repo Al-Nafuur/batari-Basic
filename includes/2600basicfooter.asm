@@ -11,7 +11,7 @@
      .byte $ff ; ReceiveBufferSize (none zero for detection of PlusROM support)
      ORG $2FFA
      RORG $FFFA
-     .word (PlusROM_API )
+     .word (PlusROM_API-$C000)
     else
      ORG $2FFC
      RORG $FFFC
@@ -43,7 +43,7 @@
      .byte $ff ; ReceiveBufferSize (none zero for detection of PlusROM support)
      ORG $8FFA
      RORG $FFFA
-     .word (PlusROM_API)
+     .word (PlusROM_API-$5000)
     else
      ORG $8FFC
      RORG $FFFC
