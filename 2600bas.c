@@ -7,7 +7,7 @@
 #include "statements.h"
 #include "keywords.h"
 #include <math.h>
-#define BB_VERSION_INFO "batari Basic v1.5 (c)2020"
+#define BB_VERSION_INFO "batari Basic v1.6 SNAPSHOT (c)2020\n"
 
 int bank = 1;
 
@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) {
 	char *includes_file = "default.inc";
 	char *filename = "2600basic_variable_redefs.h";
 	char *path = 0;
-	char def[50][100];
-	char defr[50][100];
+	char def[500][100];
+	char defr[500][100];
 	char finalcode[500];
 	char *codeadd;
 	char mycode[500];
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 				filename = optarg;
 				break;
 			case 'v':
-				printf("%s", BB_VERSION_INFO "\n");
+				printf("%s", BB_VERSION_INFO);
 				exit(0);
 			case '?':
 				fprintf(stderr, "usage: %s -r <variable redefs file> -i <includes path>\n", argv[0]);
@@ -82,8 +82,7 @@ int main(int argc, char *argv[]) {
 	extraactive = 0;
 	macroactive = 0;
 
-	fprintf(stderr, BB_VERSION_INFO "\n");
-
+	fprintf(stderr, BB_VERSION_INFO);
 	printf("game\n");       // label for start of game
 	header_open(header);
 	init_includes(path);
@@ -124,7 +123,7 @@ int main(int argc, char *argv[]) {
 				finalcode[0] = '\0';
 				defcount = 0;
 				while (1) {
-					if (defcount++ > 50) {
+					if (defcount++ > 500) {
 						fprintf(stderr, "(%d) Infinitely repeating definition or too many instances of a definition\n", bbgetline());
 						exit(1);
 					}

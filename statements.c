@@ -11,7 +11,7 @@
 BOOL includesfile_already_done = false;
 int decimal = 0;
 
-char* immedtok(char *value) { return isimmed(value) ? "#" : ""; }
+char* immedtok(char *value) { return isimmed(value) ? " #" : " "; }
 
 char* indexpart(char *mystatement, int myindex) {
   static char outstr[50];
@@ -24,8 +24,9 @@ char* indexpart(char *mystatement, int myindex) {
 
 // The fractional part of a declared 8.8 fixpoint variable
 char* fracpart(char *item) {
+  int i;
   static char outstr[50];
-  for (int i = 0; i < numfixpoint88; ++i) {
+  for (i = 0; i < numfixpoint88; ++i) {
     strcpy(outstr, fixpoint88[1][i]);
     if (!strcmp(fixpoint88[0][i], item)) return outstr;
   }
@@ -44,6 +45,7 @@ void asm_printf(const char* format, ...) {
   vprintf(format, args);
   va_end(args);
 }
+
 #define a(ASM) "\t" ASM "\n"
 #define ap(ASM, ...) asm_printf(a(ASM), ##__VA_ARGS__)
 
@@ -698,12 +700,12 @@ int switchjoy(char *input_source) {
 		return 0;
 	}
 	if (MATCH(input_source, "switchleftb")) {
-		asm_printf("LDA #$40");
+		ap("LDA #$40");
 		ap("BIT SWCHB");
 		return 1;
 	}
 	if (MATCH(input_source, "switchrightb")) {
-		asm_printf("LDA #$80");
+		ap("LDA #$80");
 		ap("BIT SWCHB");
 		return 2;
 	}
@@ -723,12 +725,12 @@ int switchjoy(char *input_source) {
 		return 0;
 	}
 	if (MATCH(input_source, "joy0left")) {
-		asm_printf("LDA #$40");
+		ap("LDA #$40");
 		ap("BIT SWCHA");
 		return 1;
 	}
 	if (MATCH(input_source, "joy0right")) {
-		asm_printf("LDA #$80");
+		ap("LDA #$80");
 		ap("BIT SWCHA");
 		return 2;
 	}
@@ -753,12 +755,12 @@ int switchjoy(char *input_source) {
 		return 0;
 	}
 	if (MATCH(input_source, "joy0fire")) {
-		asm_printf("LDA #$80");
+		ap("LDA #$80");
 		ap("BIT INPT4");
 		return 2;
 	}
 	if (MATCH(input_source, "joy1fire")) {
-		asm_printf("LDA #$80");
+		ap("LDA #$80");
 		ap("BIT INPT5");
 		return 2;
 	}
@@ -2673,7 +2675,7 @@ void doif(char **statement) {
 		else {						// then statement
 			// first, take negative of condition and branch around statement
 			j = i;
-			printf("%s .skip%s\n", not ? "BNE" : "BEQ", statement[0]);
+			ap("%s .skip%s\n", not ? "BNE" : "BEQ", statement[0]);
 
 			// separate statement
 			for (i = j; i < 200; ++i) {
@@ -3041,7 +3043,7 @@ void displayoperation(char *opcode, char *operand, int index) {
 		}
 	}
 	else {
-		ap("%s ", opcode + 1, indexpart(operand, index));
+		ap("%s %s ", opcode + 1, indexpart(operand, index));
 	}
 }
 
@@ -3275,7 +3277,7 @@ void dolet(char **cstatement) {
 			ap("LDA %s", getbitvar + (getbitvar[0] == '!'));
 			ap("AND #%d", (1 << ((int) statement[4][strlen(getbitvar) + 1] - '0')));
 			ap("PHP");
-			printf("LDA ");
+			printf("\tLDA ");
 			for (i = 0; i < 200; ++i) {
 				if (statement[2][i] == '{') break;
 				printf("%c", statement[2][i]);
@@ -4046,7 +4048,8 @@ void prerror(char *myerror) { fprintf(stderr, "(%d): %s\n", line, myerror); }
 BOOL isimmed(char *value) {
 	// search queue of constants
 	// removeCR(value);
-	for (int i = 0; i < numconstants; ++i) {
+	int i;
+	for (i = 0; i < numconstants; ++i) {
 		if (!strcmp(value, constants[i])) {
 			// a constant should be treated as an immediate
 			return true;
