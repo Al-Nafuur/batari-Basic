@@ -11,7 +11,7 @@
      .byte $ff ; ReceiveBufferSize (none zero for detection of PlusROM support)
      ORG $2FFA
      RORG $FFFA
-     .word (PlusROM_API-$C000)
+     .word (PlusROM_API)
     else
      ORG $2FFC
      RORG $FFFC
@@ -27,7 +27,7 @@
      .byte $ff ; ReceiveBufferSize (none zero for detection of PlusROM support)
      ORG $4FFA
      RORG $FFFA
-     .word (PlusROM_API-$9000)
+     .word (PlusROM_API)
     else
      ORG $4FFC
      RORG $FFFC
@@ -43,7 +43,7 @@
      .byte $ff ; ReceiveBufferSize (none zero for detection of PlusROM support)
      ORG $8FFA
      RORG $FFFA
-     .word (PlusROM_API-$5000)
+     .word (PlusROM_API)
     else
      ORG $8FFC
      RORG $FFFC
@@ -67,14 +67,14 @@
    ifconst ROM2k
     ifconst PlusROM_functions
      ORG $F7FA
-     .word (PlusROM_API-$E000)
+     .word (PlusROM_API)
     else
      ORG $F7FC
     endif   
    else
     ifconst PlusROM_functions
      ORG $FFFA
-     .word (PlusROM_API-$E000)
+     .word (PlusROM_API)
     else
      ORG $FFFC
     endif   
