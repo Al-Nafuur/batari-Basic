@@ -67,14 +67,14 @@
    ifconst ROM2k
     ifconst PlusROM_functions
      ORG $F7FA
-     .word (PlusROM_API)
+     .word (PlusROM_API - $E000)
     else
      ORG $F7FC
     endif   
    else
     ifconst PlusROM_functions
      ORG $FFFA
-     .word (PlusROM_API)
+     .word (PlusROM_API - $E000)
     else
      ORG $FFFC
     endif   
